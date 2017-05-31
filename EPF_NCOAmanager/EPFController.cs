@@ -91,11 +91,11 @@ namespace EPF_NCOAmanager
         /// <param name="pwd"></param>
         public bool epfLogin(string user, string pwd)
         {
-            if (!isProxyValid)
-            {
-                displayErrorMsg("Valid Proxy Settings are missing");
-                return false;
-            }
+            //if (!isProxyValid)
+            //{
+            //    displayErrorMsg("Valid Proxy Settings are missing");
+            //    return false;
+            //}
 
             JSONlogin jLogin = new JSONlogin();     // No need to CommonToAllRequests ==> does not require Logon/Token keys
             jLogin.pword = pwd;
