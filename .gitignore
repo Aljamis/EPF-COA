@@ -6,7 +6,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.sln
 
 # VS-2010 specific file
 *.csproj
