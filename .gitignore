@@ -8,6 +8,9 @@
 *.sln.docstates
 *.sln
 
+# VS-2010 specific file
+*.csproj
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
