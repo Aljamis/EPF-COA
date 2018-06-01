@@ -60,6 +60,9 @@ namespace EPF_NCOAmanager
             req.Proxy = myProxy;
             isProxyValid = false;       // Reset .. just in case user changes settings
 
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             try
             {
                 WebResponse resp = req.GetResponse();
@@ -69,6 +72,8 @@ namespace EPF_NCOAmanager
             }
             catch (WebException wEx)
             {
+                Console.WriteLine(wEx.Message);
+                Console.WriteLine(baseURL + "/epf/version");
                 //  This is added to look for a way to trace the 407 errors 
                 //  we are getting in CEI.
                 HttpWebResponse resp = (HttpWebResponse)wEx.Response;
@@ -102,9 +107,11 @@ namespace EPF_NCOAmanager
             jLogin.login = user;
 
             HttpWebResponse resp = performRequest(createRequest(jLogin, "/epf/login"));
+            processResponse(resp);
             if (resp == null) return false;
 
-//            JSONlogin respJSON = JsonConvert.DeserializeObject<JSONlogin>(extractResponsePayload(resp));
+            //            JSONlogin respJSON = JsonConvert.DeserializeObject<JSONlogin>(extractResponsePayload(resp));
+            resp.Close();
             return true;
         }
 
@@ -116,6 +123,7 @@ namespace EPF_NCOAmanager
 
             HttpWebResponse resp = performRequest( createRequest(jlogout , "/epf/logout") );
             if (resp == null) return false;
+            resp.Close();
             return true;
         }
 
@@ -141,6 +149,7 @@ namespace EPF_NCOAmanager
                 processResponse(resp);
                 JSONlistOut listOut = JsonConvert.DeserializeObject<JSONlistOut>(extractResponsePayload(resp));
 
+                resp.Close();
                 return listOut.filelist;
             }
             catch (WebException wEx)
@@ -167,6 +176,7 @@ namespace EPF_NCOAmanager
 
             HttpWebResponse resp = performRequest(createRequest(j, "/download/status"));
             processResponse(resp);
+            resp.Close();
         }
 
 
@@ -182,8 +192,8 @@ namespace EPF_NCOAmanager
 
             if ((req.HaveResponse) && resp != null)
             {
-                if (!processResponse(resp))
-                    return null;
+                //if (!processResponse(resp))
+                //    return null;
             }
             else
             {
@@ -244,7 +254,7 @@ namespace EPF_NCOAmanager
 
             this.EPFtokenKey = resp.Headers.Get("User-Tokenkey");
             this.EPFlogonKey = resp.Headers.Get("User-Logonkey");
-            displayHeaders(resp);
+            //displayHeaders(resp);
             return true;
         }
 

@@ -253,7 +253,6 @@ namespace EPF_NCOAmanager
             if (msg == WM_SYSCOMMAND &&
                     ((int)wParam & 0xFFF0) == SC_CONTEXTHELP)
             {
-                MessageBox.Show("help");
                 System.Diagnostics.Process.Start("EPFsupport.htm");
                 handled = true;
             }
